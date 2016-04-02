@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd" >
+<log4j:configuration debug="null" reset="false"
+	threshold="null" xmlns:log4j="http://jakarta.apache.org/log4j/">
+	<appender class="org.apache.log4j.ConsoleAppender" name="console">
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[[%p] %d{dd-MM-yyyy HH:mm:ss,SSS}:%C]: %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="levelMin" value="INFO" />
+			<param name="levelMax" value="ERROR" />
+		</filter>
+	</appender>
+
+	<appender name="stdout" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="logs/stdout.log" />
+		<param name="datePattern" value=".yyyy-MM-dd" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[[%p] %d{dd-MM-yyyy HH:mm:ss,SSS}:%C]: %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="levelMin" value="INFO" />
+			<param name="levelMax" value="ERROR" />
+		</filter>
+
+	</appender>
+
+	<appender name="stderr" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="file" value="logs/stderr.log" />
+		<param name="datePattern" value=".yyyy-MM-dd" />
+		<param name="Append" value="true" />
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[[%p] %d{dd-MM-yyyy HH:mm:ss,SSS}:%C]: %m%n" />
+		</layout>
+		<filter class="org.apache.log4j.varia.LevelRangeFilter">
+			<param name="levelMin" value="ERROR" />
+			<param name="levelMax" value="ERROR" />
+		</filter>
+
+	</appender>
+	
+
+	<logger name="pl.bgora.game">
+		<level value="DEBUG"></level>
+		<appender-ref ref="console" />
+		<appender-ref ref="stdout" />
+		<appender-ref ref="stderr" />
+	</logger>
+	
+	
+
+</log4j:configuration>
