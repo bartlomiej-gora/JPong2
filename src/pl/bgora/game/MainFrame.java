@@ -95,109 +95,12 @@ private void startThread() {
         	//1.
             // move objects
         	//
-            Point newBallPoint = new Point();
-            newBallPoint.setLocation(ball.getPosition().getX() + ball.getSpeedx(),ball.getPosition().getY() + ball.getSpeedy() );
-            ball.setPosition(newBallPoint);
-            Point newLeftPoint = new Point();
-            newLeftPoint.setLocation(left.getPosition().getX(), left.getPosition().getY() + left.getSpeed());
-            left.setPosition(newLeftPoint);
-            Point newRightPoint = new Point();
-            newRightPoint.setLocation(right.getPosition().getX(), right.getPosition().getY() + right.getSpeed());
-            right.setPosition(newRightPoint);
+          move();
           
-            //2.
+          //2.
           // Check collisions
           // colissions for players vs. court
-          if (left.getSpeed() > 0) {
-            if (left.getPosition().y >= bottomLine - Player.HEIGHT) {
-              left.setPosition(new Point(left.getPosition().x, bottomLine - Player.HEIGHT));
-              left.setSpeed(0);
-              
-            }
-          }
-          else if (left.getPosition().y <= topLine) {
-            left.setPosition(new Point(left.getPosition().x, topLine));
-            left.setSpeed(0);
-          }
-          
-          // right
-          if (right.getSpeed() > 0) {
-            if (right.getPosition().y >= bottomLine - Player.HEIGHT) {
-            	right.setPosition(new Point(right.getPosition().x, bottomLine - Player.HEIGHT));
-              right.setSpeed(0);
-            }
-          } else if (right.getPosition().y <= topLine) {
-            right.setSpeed(0);
-            right.setPosition(new Point(right.getPosition().x, topLine));
-          }
-          
-          // check collision for ball vs. wall
-          // bottomLine
-          if (ball.getBounds().intersectsLine(leftLine, bottomLine, rightLine, bottomLine)) {
-            ball.setSpeedy(-Math.abs(ball.getSpeedy()));
-          }
-          // topLine
-          if (ball.getBounds().intersectsLine(leftLine, topLine, rightLine, topLine)) {
-            ball.setSpeedy(Math.abs(ball.getSpeedy()));
-          }
-          
-          // leftLine - score for right player
-          if (ball.getBounds().intersectsLine(leftLine, bottomLine, leftLine, topLine)) {
-            right.setScore(right.getScore() + 1);
-            pointSound.stop();
-            pointSound.setFramePosition(0);
-            pointSound.start();
-            // reset ball
-            ball.setPosition(getCenter());
-            leftRight = rand.nextInt(2);
-            if (leftRight == 0) {
-              ball.setSpeedx(Ball.DEFAULT_SPEED);
-            } else {
-              ball.setSpeedx(-Ball.DEFAULT_SPEED);
-            }
-          }
-          // rightLine - score for left player.
-          if (ball.getBounds().intersectsLine(rightLine, bottomLine, rightLine, topLine)) {
-            left.setScore(left.getScore() + 1);
-            pointSound.stop();
-            pointSound.setFramePosition(0);
-            pointSound.start();
-            // reset ball
-            ball.setPosition(getCenter());
-            leftRight = rand.nextInt(2);
-            if (leftRight == 0) {
-              ball.setSpeedx(Ball.DEFAULT_SPEED);
-              ball.setSpeedy(0);
-            } else {
-              ball.setSpeedx(-Ball.DEFAULT_SPEED);
-              ball.setSpeedy(0);
-            }
-          }
-          
-          // collisions with players.
-          if (ball.getBounds().intersects(left.getBounds())) {
-            ball.setSpeedx(Math.abs(ball.getSpeedx()));
-            hitSound.stop();
-            hitSound.setFramePosition(0);
-            hitSound.start();
-            if (left.getSpeed() > 0) {
-              ball.setSpeedy(Math.abs(Ball.DEFAULT_SPEED));
-            } else if (left.getSpeed() < 0) {
-              ball.setSpeedy(-Math.abs(Ball.DEFAULT_SPEED));
-            }
-          }
-          
-          if (ball.getBounds().intersects(right.getBounds())) {
-            ball.setSpeedx(-Math.abs(ball.getSpeedx()));
-            hitSound.stop();
-            hitSound.setFramePosition(0);
-            hitSound.start();
-            if (right.getSpeed() > 0) {
-              ball.setSpeedy(Math.abs(Ball.DEFAULT_SPEED));
-            } else if (right.getSpeed() < 0) {
-              ball.setSpeedy(-Math.abs(Ball.DEFAULT_SPEED));
-            }
-          }
+          checkCollision(rand);
           
           //3. Paint!
           //paint;
@@ -209,6 +112,112 @@ private void startThread() {
           }
         }
         
+      }
+
+      private void checkCollision(Random rand) {
+        int leftRight;
+        if (left.getSpeed() > 0) {
+          if (left.getPosition().y >= bottomLine - Player.HEIGHT) {
+            left.setPosition(new Point(left.getPosition().x, bottomLine - Player.HEIGHT));
+            left.setSpeed(0);
+
+          }
+        }
+        else if (left.getPosition().y <= topLine) {
+          left.setPosition(new Point(left.getPosition().x, topLine));
+          left.setSpeed(0);
+        }
+
+        // right
+        if (right.getSpeed() > 0) {
+          if (right.getPosition().y >= bottomLine - Player.HEIGHT) {
+              right.setPosition(new Point(right.getPosition().x, bottomLine - Player.HEIGHT));
+            right.setSpeed(0);
+          }
+        } else if (right.getPosition().y <= topLine) {
+          right.setSpeed(0);
+          right.setPosition(new Point(right.getPosition().x, topLine));
+        }
+
+        // check collision for ball vs. wall
+        // bottomLine
+        if (ball.getBounds().intersectsLine(leftLine, bottomLine, rightLine, bottomLine)) {
+          ball.setSpeedy(-Math.abs(ball.getSpeedy()));
+        }
+        // topLine
+        if (ball.getBounds().intersectsLine(leftLine, topLine, rightLine, topLine)) {
+          ball.setSpeedy(Math.abs(ball.getSpeedy()));
+        }
+
+        // leftLine - score for right player
+        if (ball.getBounds().intersectsLine(leftLine, bottomLine, leftLine, topLine)) {
+          right.setScore(right.getScore() + 1);
+          pointSound.stop();
+          pointSound.setFramePosition(0);
+          pointSound.start();
+          // reset ball
+          ball.setPosition(getCenter());
+          leftRight = rand.nextInt(2);
+          if (leftRight == 0) {
+            ball.setSpeedx(Ball.DEFAULT_SPEED);
+          } else {
+            ball.setSpeedx(-Ball.DEFAULT_SPEED);
+          }
+        }
+        // rightLine - score for left player.
+        if (ball.getBounds().intersectsLine(rightLine, bottomLine, rightLine, topLine)) {
+          left.setScore(left.getScore() + 1);
+          pointSound.stop();
+          pointSound.setFramePosition(0);
+          pointSound.start();
+          // reset ball
+          ball.setPosition(getCenter());
+          leftRight = rand.nextInt(2);
+          if (leftRight == 0) {
+            ball.setSpeedx(Ball.DEFAULT_SPEED);
+            ball.setSpeedy(0);
+          } else {
+            ball.setSpeedx(-Ball.DEFAULT_SPEED);
+            ball.setSpeedy(0);
+          }
+        }
+
+        // collisions with players.
+        if (ball.getBounds().intersects(left.getBounds())) {
+          ball.setSpeedx(Math.abs(ball.getSpeedx()));
+          hitSound.stop();
+          hitSound.setFramePosition(0);
+          hitSound.start();
+          if (left.getSpeed() > 0) {
+            ball.setSpeedy(Math.abs(Ball.DEFAULT_SPEED));
+          } else if (left.getSpeed() < 0) {
+            ball.setSpeedy(-Math.abs(Ball.DEFAULT_SPEED));
+          }
+        }
+
+        if (ball.getBounds().intersects(right.getBounds())) {
+          ball.setSpeedx(-Math.abs(ball.getSpeedx()));
+          hitSound.stop();
+          hitSound.setFramePosition(0);
+          hitSound.start();
+          if (right.getSpeed() > 0) {
+            ball.setSpeedy(Math.abs(Ball.DEFAULT_SPEED));
+          } else if (right.getSpeed() < 0) {
+            ball.setSpeedy(-Math.abs(Ball.DEFAULT_SPEED));
+          }
+        }
+      }
+
+      private void move() {
+        Point newBallPoint = new Point();
+        newBallPoint.setLocation(ball.getPosition().getX() + ball.getSpeedx(),ball.getPosition().getY() + ball.getSpeedy() );
+        ball.setPosition(newBallPoint);
+        Point newLeftPoint = new Point();
+        newLeftPoint.setLocation(left.getPosition().getX(), left.getPosition().getY() + left.getSpeed());
+        left.setPosition(newLeftPoint);
+        Point newRightPoint = new Point();
+        newRightPoint.setLocation(right.getPosition().getX(), right.getPosition().getY() + right.getSpeed());
+        right.setPosition(newRightPoint);
       }
     };
     
