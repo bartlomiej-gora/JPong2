@@ -22,31 +22,18 @@ import org.apache.log4j.Logger;
 public class MainFrame extends JFrame {
   
   private static Logger LOGGER = Logger.getLogger(MainFrame.class);
-  
   private int height;
-  
   private int width;
-  
   private int topLine;
-  
   private int bottomLine;
-  
   private int leftLine;
-  
   private int rightLine;
-  
   private Player left;
-  
   private Player right;
-  
   private Ball ball;
-  
   private Image image;
-  
   private Clip hitSound;
-  
   private Clip pointSound;
-  
   private Image screen;
   
   public MainFrame() {
@@ -92,18 +79,12 @@ private void startThread() {
           ball.setSpeedx(-Ball.DEFAULT_SPEED);
         }
         while (left.getScore() < 5 && right.getScore() < 5) {
-        	//1.
             // move objects
-        	//
           move();
-          
-          //2.
           // Check collisions
-          // colissions for players vs. court
+          // collisions for players vs. court
           checkCollision(rand);
-          
           //3. Paint!
-          //paint;
           myPaint(getGraphics());
           try {
             Thread.sleep(0,10);
